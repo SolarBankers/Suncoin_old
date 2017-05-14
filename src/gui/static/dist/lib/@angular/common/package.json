@@ -1,18 +1,13 @@
 {
   "_args": [
     [
-      {
-        "name": "@angular/common",
-        "raw": "@angular/common@2.0.0-rc.1",
-        "rawSpec": "2.0.0-rc.1",
-        "scope": "@angular",
-        "spec": "2.0.0-rc.1",
-        "type": "version"
-      },
-      "/home/atomos/.gvm/pkgsets/go1.7/global/src/github.com/skycoin/skycoin/src/gui/static"
+      "@angular/common@2.0.0-rc.1",
+      "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static"
     ]
   ],
+  "_cnpm_publish_time": 1462310718402,
   "_from": "@angular/common@2.0.0-rc.1",
+  "_hasShrinkwrap": false,
   "_id": "@angular/common@2.0.0-rc.1",
   "_inCache": true,
   "_installable": true,
@@ -43,7 +38,7 @@
   "_shasum": "7f3f7622eb9af94da3f5ebff305de662a5d5942e",
   "_shrinkwrap": null,
   "_spec": "@angular/common@2.0.0-rc.1",
-  "_where": "/home/atomos/.gvm/pkgsets/go1.7/global/src/github.com/skycoin/skycoin/src/gui/static",
+  "_where": "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static",
   "author": {
     "name": "angular"
   },
@@ -52,8 +47,10 @@
   "devDependencies": {},
   "directories": {},
   "dist": {
+    "noattachment": false,
     "shasum": "7f3f7622eb9af94da3f5ebff305de662a5d5942e",
-    "tarball": "https://registry.npmjs.org/@angular/common/-/common-2.0.0-rc.1.tgz"
+    "size": 303475,
+    "tarball": "http://registry.npm.taobao.org/@angular/common/download/@angular/common-2.0.0-rc.1.tgz"
   },
   "jsnext:main": "esm/index.js",
   "license": "MIT",
@@ -69,6 +66,7 @@
   "peerDependencies": {
     "@angular/core": "2.0.0-rc.1"
   },
+  "publish_time": 1462310718402,
   "readme": "ERROR: No README data found!",
   "scripts": {},
   "typings": "index.d.ts",

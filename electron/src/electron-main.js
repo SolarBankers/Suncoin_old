@@ -25,7 +25,7 @@ let currentURL;
 app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
 app.commandLine.appendSwitch('ssl-version-fallback-min', 'tls1.2');
 app.commandLine.appendSwitch('--no-proxy-server');
-app.setAsDefaultProtocolClient('skycoin');
+app.setAsDefaultProtocolClient('suncoin');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -34,10 +34,10 @@ let win;
 var skycoin = null;
 
 function startSkycoin() {
-  console.log('Starting skycoin from electron');
+  console.log('Starting suncoin from electron');
 
   if (skycoin) {
-    console.log('Skycoin already running');
+    console.log('Suncoin already running');
     app.emit('skycoin-ready');
     return
   }
@@ -51,15 +51,15 @@ function startSkycoin() {
   var exe = (() => {
         switch (process.platform) {
   case 'darwin':
-    return path.join(appPath, '../../Resources/app/skycoin');
+    return path.join(appPath, '../../Resources/app/suncoin');
   case 'win32':
     // Use only the relative path on windows due to short path length
     // limits
-    return './resources/app/skycoin.exe';
+    return './resources/app/suncoin.exe';
   case 'linux':
-    return path.join(path.dirname(appPath), './resources/app/skycoin');
+    return path.join(path.dirname(appPath), './resources/app/suncoin');
   default:
-    return './resources/app/skycoin';
+    return './resources/app/suncoin';
   }
 })()
 
@@ -75,7 +75,7 @@ function startSkycoin() {
   skycoin = childProcess.spawn(exe, args);
 
   skycoin.on('error', (e) => {
-    dialog.showErrorBox('Failed to start skycoin', e.toString());
+    dialog.showErrorBox('Failed to start suncoin', e.toString());
   app.quit();
 });
 
@@ -111,13 +111,13 @@ function startSkycoin() {
 
   skycoin.on('close', (code) => {
     // log.info('Skycoin closed');
-    console.log('Skycoin closed');
+    console.log('Suncoin closed');
   reset();
 });
 
   skycoin.on('exit', (code) => {
     // log.info('Skycoin exited');
-    console.log('Skycoin exited');
+    console.log('Suncoin exited');
   reset();
 });
 }
@@ -131,7 +131,7 @@ function createWindow(url) {
   win = new BrowserWindow({
     width: 1200,
     height: 900,
-    title: 'Skycoin',
+    title: 'Suncoin',
     nodeIntegration: false,
     webPreferences: {
       webgl: false,
@@ -144,7 +144,7 @@ function createWindow(url) {
 
   const ses = win.webContents.session
   ses.clearCache(function () {
-    console.log('Cleared the caching of the skycoin wallet.');
+    console.log('Cleared the caching of the suncoin wallet.');
   });
 
   ses.clearStorageData([],function(){
@@ -166,9 +166,9 @@ function createWindow(url) {
 
   // create application's main menu
   var template = [{
-    label: "Skycoin",
+    label: "Suncoin",
     submenu: [
-      { label: "About Skycoin", selector: "orderFrontStandardAboutPanel:" },
+      { label: "About Suncoin", selector: "orderFrontStandardAboutPanel:" },
       { type: "separator" },
       { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); } }
     ]

@@ -1,18 +1,13 @@
 {
   "_args": [
     [
-      {
-        "name": "rxjs",
-        "raw": "rxjs@5.0.0-beta.6",
-        "rawSpec": "5.0.0-beta.6",
-        "scope": null,
-        "spec": "5.0.0-beta.6",
-        "type": "version"
-      },
-      "/home/atomos/.gvm/pkgsets/go1.7/global/src/github.com/skycoin/skycoin/src/gui/static"
+      "rxjs@5.0.0-beta.6",
+      "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static"
     ]
   ],
+  "_cnpm_publish_time": 1460493695985,
   "_from": "rxjs@5.0.0-beta.6",
+  "_hasShrinkwrap": false,
   "_id": "rxjs@5.0.0-beta.6",
   "_inCache": true,
   "_installable": true,
@@ -43,7 +38,7 @@
   "_shasum": "cb6dc46d6ddfedfeefc9b15dafd09c34a4370d23",
   "_shrinkwrap": null,
   "_spec": "rxjs@5.0.0-beta.6",
-  "_where": "/home/atomos/.gvm/pkgsets/go1.7/global/src/github.com/skycoin/skycoin/src/gui/static",
+  "_where": "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static",
   "author": {
     "email": "blesh@netflix.com",
     "name": "Ben Lesh"
@@ -139,8 +134,10 @@
   },
   "directories": {},
   "dist": {
+    "noattachment": false,
     "shasum": "cb6dc46d6ddfedfeefc9b15dafd09c34a4370d23",
-    "tarball": "https://registry.npmjs.org/rxjs/-/rxjs-5.0.0-beta.6.tgz"
+    "size": 928794,
+    "tarball": "http://registry.npm.taobao.org/rxjs/download/rxjs-5.0.0-beta.6.tgz"
   },
   "engines": {
     "npm": ">=2.0.0"
@@ -164,14 +161,11 @@
     {
       "email": "ben@benlesh.com",
       "name": "blesh"
-    },
-    {
-      "email": "middlefloor@gmail.com",
-      "name": "jeffbcross"
     }
   ],
   "name": "rxjs",
   "optionalDependencies": {},
+  "publish_time": 1460493695985,
   "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",

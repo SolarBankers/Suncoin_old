@@ -1,12 +1,12 @@
 {
-    "name": "skycoin",
-    "productName": "Skycoin",
-    "author": "skycoin",
+    "name": "suncoin",
+    "productName": "Suncoin",
+    "author": "suncoin",
     "main": "src/electron-main.js",
     "version": "0.15.0",
-    "description": "skycoin wallet",
+    "description": "suncoin wallet",
     "build": {
-        "appId": "org.skycoin.skycoin",
+        "appId": "org.suncoin.suncoin",
         "nsis": {
             "oneClick": false,
             "allowToChangeInstallationDirectory": true

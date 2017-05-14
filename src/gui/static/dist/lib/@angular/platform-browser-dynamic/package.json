@@ -1,18 +1,13 @@
 {
   "_args": [
     [
-      {
-        "name": "@angular/platform-browser-dynamic",
-        "raw": "@angular/platform-browser-dynamic@2.0.0-rc.1",
-        "rawSpec": "2.0.0-rc.1",
-        "scope": "@angular",
-        "spec": "2.0.0-rc.1",
-        "type": "version"
-      },
-      "/home/atomos/.gvm/pkgsets/go1.7/global/src/github.com/skycoin/skycoin/src/gui/static"
+      "@angular/platform-browser-dynamic@2.0.0-rc.1",
+      "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static"
     ]
   ],
+  "_cnpm_publish_time": 1462310735876,
   "_from": "@angular/platform-browser-dynamic@2.0.0-rc.1",
+  "_hasShrinkwrap": false,
   "_id": "@angular/platform-browser-dynamic@2.0.0-rc.1",
   "_inCache": true,
   "_installable": true,
@@ -43,7 +38,7 @@
   "_shasum": "0edb02929dbe479afdfeba6a1a3b67985a8f66ff",
   "_shrinkwrap": null,
   "_spec": "@angular/platform-browser-dynamic@2.0.0-rc.1",
-  "_where": "/home/atomos/.gvm/pkgsets/go1.7/global/src/github.com/skycoin/skycoin/src/gui/static",
+  "_where": "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static",
   "author": {
     "name": "angular"
   },
@@ -52,8 +47,10 @@
   "devDependencies": {},
   "directories": {},
   "dist": {
+    "noattachment": false,
     "shasum": "0edb02929dbe479afdfeba6a1a3b67985a8f66ff",
-    "tarball": "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.0.0-rc.1.tgz"
+    "size": 72299,
+    "tarball": "http://registry.npm.taobao.org/@angular/platform-browser-dynamic/download/@angular/platform-browser-dynamic-2.0.0-rc.1.tgz"
   },
   "jsnext:main": "esm/index.js",
   "license": "MIT",
@@ -72,6 +69,7 @@
     "@angular/core": "2.0.0-rc.1",
     "@angular/platform-browser": "2.0.0-rc.1"
   },
+  "publish_time": 1462310735876,
   "readme": "ERROR: No README data found!",
   "scripts": {},
   "typings": "index.d.ts",
