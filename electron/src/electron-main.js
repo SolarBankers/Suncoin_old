@@ -18,7 +18,7 @@ require('electron-debug')({ enabled: true, showDevTools: false });
 
 global.eval = function() { throw new Error('bad!!'); }
 
-const defaultURL = 'http://127.0.0.1:6420/';
+const defaultURL = 'http://127.0.0.1:7620/';
 let currentURL;
 
 // Force everything localhost, in case of a leak
