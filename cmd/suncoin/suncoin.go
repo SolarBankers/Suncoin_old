@@ -52,7 +52,10 @@ var (
 	//GenesisTimestamp: 1426562704,
 	//GenesisCoinVolume: 100e12, //100e6 * 10e6
 
-	DefaultConnections = []string{}
+	DefaultConnections = []string{
+		"116.62.220.158:7200",
+		"119.23.23.184:7200",
+	}
 )
 
 // Command line interface arguments
