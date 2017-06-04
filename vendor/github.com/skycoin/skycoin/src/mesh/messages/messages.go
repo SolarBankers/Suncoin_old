@@ -42,19 +42,8 @@ const (
 	MsgConnectionOnCM             // NodeManager -> Node
 	MsgShutdownCM                 // NodeManager -> Node
 
-	MsgUserCommand      // Viscript -> Meshnet
-	MsgUserCommandAck   // Meshnet -> Viscript
-	MsgPing             // Viscript -> Meshnet
-	MsgPingAck          // Meshnet -> Viscript
-	MsgCreateAck        // Meshnet -> Viscript
-	MsgResourceUsage    // Viscript -> Meshnet
-	MsgResourceUsageAck // Meshnet -> Viscript
-	MsgUserShutdown     // Viscript -> Meshnet
-	MsgUserShutdownAck  // Meshnet -> Viscript
-
-	MsgNodeAppMessage  // Application -> Node
-	MsgNodeAppResponse // Node -> Application
-	//	MsgAppDataMessage      // Node -> Application
+	MsgNodeAppMessage      // Application -> Node
+	MsgNodeAppResponse     // Node -> Application
 	MsgSendFromAppMessage  // Application -> Node
 	MsgRegisterAppMessage  // Application -> Node
 	MsgConnectToAppMessage // Application -> Node
@@ -73,7 +62,6 @@ func GetMessageType(message []byte) uint16 {
 	if err != nil {
 		fmt.Println("binary.Read failed: ", err)
 	}
-	//	value = (uint16)(message[0])
 	return value
 }
 
@@ -166,8 +154,9 @@ type ProxyMessage struct {
 // ==================== control messages ========================
 
 type RegisterNodeCM struct {
-	Host    string
-	Connect bool
+	Hostname string
+	Host     string
+	Connect  bool
 }
 
 type RegisterNodeCMAck struct {
@@ -217,7 +206,7 @@ type CommonCMAck struct {
 type ConnectDirectlyCM struct {
 	Sequence uint32
 	From     cipher.PubKey
-	To       cipher.PubKey
+	To       string
 }
 
 type ConnectDirectlyCMAck struct {
@@ -230,7 +219,7 @@ type ConnectWithRouteCM struct {
 	AppIdFrom AppId
 	AppIdTo   AppId
 	From      cipher.PubKey
-	To        cipher.PubKey
+	To        string
 }
 
 type ConnectWithRouteCMAck struct {
@@ -260,29 +249,6 @@ type UserCommand struct {
 	Payload  []byte
 }
 
-type UserCommandAck struct {
-	Sequence uint32
-	AppId    uint32
-	Payload  []byte
-}
-
-type CreateAck struct{}
-
-type ResourceUsage struct{}
-
-type ResourceUsageAck struct {
-	CPU    float64
-	Memory uint64
-}
-
-type UserShutdown struct{}
-
-type UserShutdownAck struct{}
-
-type Ping struct{}
-
-type PingAck struct{}
-
 type NodeAppMessage struct {
 	Sequence uint32
 	AppId    AppId
@@ -306,13 +272,7 @@ type AssignConnectionNAM struct {
 }
 
 type ConnectToAppMessage struct {
-	Address cipher.PubKey
+	Address string
 	AppFrom AppId
 	AppTo   AppId
 }
-
-/*
-type AppDataMessage struct {
-	Data []byte
-}
-*/
