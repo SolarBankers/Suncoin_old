@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
@@ -20,11 +21,11 @@ import (
 	"github.com/skycoin/skycoin/src/daemon"
 	"github.com/skycoin/skycoin/src/gui"
 	"github.com/skycoin/skycoin/src/util"
-	"github.com/skycoin/skycoin/src/visor"
-	"github.com/skycoin/skycoin/src/visor/blockdb"
 )
 
 var (
+	// Version node version which will be set when build wallet by LDFLAGS
+	Version    = "0.0.0"
 	logger     = util.MustGetLogger("main")
 	logFormat  = "[suncoin.%{module}:%{level}] %{message}"
 	logModules = []string{
@@ -135,7 +136,10 @@ type Config struct {
 	// to show up as a peer
 	ConnectTo string
 
-	DB interface{}
+	DBPath       string
+	Arbitrating  bool
+	RPCThreadNum uint // rpc number
+	Logtofile    bool
 }
 
 func (c *Config) register() {
@@ -171,6 +175,7 @@ func (c *Config) register() {
 		"port to serve rpc interface on")
 	flag.StringVar(&c.RPCInterfaceAddr, "rpc-interface-addr", c.RPCInterfaceAddr,
 		"addr to serve rpc interface on")
+	flag.UintVar(&c.RPCThreadNum, "rpc-thread-num", 5, "rpc thread number")
 
 	flag.BoolVar(&c.LaunchBrowser, "launch-browser", c.LaunchBrowser,
 		"launch system default webbrowser at client startup")
@@ -190,6 +195,8 @@ func (c *Config) register() {
 		"Choices are: debug, info, notice, warning, error, critical")
 	flag.BoolVar(&c.ColorLog, "color-log", c.ColorLog,
 		"Add terminal colors to log output")
+	flag.BoolVar(&c.Logtofile, "logtofile", false, "log to file")
+
 	flag.StringVar(&c.GUIDirectory, "gui-dir", c.GUIDirectory,
 		"static content directory for the html gui")
 
@@ -216,8 +223,9 @@ func (c *Config) register() {
 		c.OutgoingConnectionsRate, "How often to make an outgoing connection")
 	flag.BoolVar(&c.LocalhostOnly, "localhost-only", c.LocalhostOnly,
 		"Run on localhost and only connect to localhost peers")
-	//flag.StringVar(&c.AddressVersion, "address-version", c.AddressVersion,
-	//	"Wallet address version. Options are 'test' and 'main'")
+	flag.BoolVar(&c.Arbitrating, "arbitrating", c.Arbitrating, "Run node in arbitrating mode")
+
+	flag.StringVar(&c.DBPath, "dbname", "data.db", "boltdb file name")
 }
 
 var devConfig Config = Config{
@@ -335,6 +343,7 @@ func (c *Config) postProcess() {
 	panicIfError(err, "Invalid -log-level %s", c.logLevel)
 	c.LogLevel = ll
 
+	c.DBPath = filepath.Join(c.DataDirectory, c.DBPath)
 }
 
 func panicIfError(err error, msg string, args ...interface{}) {
@@ -438,10 +447,12 @@ func configureDaemon(c *Config) daemon.Config {
 	dc.Visor.Config.GenesisSignature = c.GenesisSignature
 	dc.Visor.Config.GenesisTimestamp = c.GenesisTimestamp
 	dc.Visor.Config.GenesisCoinVolume = GenesisCoinVolume
-	visor.SetDB(&dc.Visor.Config, c.DB)
+	dc.Visor.Config.DBPath = c.DBPath
+	dc.Visor.Config.Arbitrating = c.Arbitrating
 	return dc
 }
 
+// Run starts the suncoin node
 func Run(c *Config) {
 
 	c.GUIDirectory = util.ResolveResourceDirectory(c.GUIDirectory)
@@ -464,19 +475,22 @@ func Run(c *Config) {
 	logCfg := util.DevLogConfig(logModules)
 	logCfg.Format = logFormat
 	logCfg.Colors = c.ColorLog
+
+	if c.Logtofile {
+		// open log file
+		// logfile in ~/.skycoin/$time-$version.log
+		var logfmt = "2006-01-02-030405"
+		logfile := filepath.Join(c.DataDirectory, fmt.Sprintf("%s-v%s.log", time.Now().Format(logfmt), Version))
+		fd, err := os.OpenFile(logfile, os.O_RDWR|os.O_CREATE, 0666)
+		if err != nil {
+			panic(err)
+		}
+		defer fd.Close()
+		out := io.MultiWriter(os.Stdout, fd)
+		logCfg.Output = out
+	}
+
 	logCfg.InitLogger()
-
-	// initLogging(c.LogLevel, c.ColorLog)
-
-	// start the block db.
-	db, stop := blockdb.Open()
-	defer stop()
-
-	c.DB = db
-
-	// start the transaction db.
-	// transactiondb.Start()
-	// defer transactiondb.Stop()
 
 	// If the user Ctrl-C's, shutdown properly
 	quit := make(chan int)
