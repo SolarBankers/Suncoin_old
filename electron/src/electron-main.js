@@ -27,6 +27,8 @@ app.commandLine.appendSwitch('ssl-version-fallback-min', 'tls1.2');
 app.commandLine.appendSwitch('--no-proxy-server');
 app.setAsDefaultProtocolClient('suncoin');
 
+
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
@@ -67,12 +69,11 @@ function startSkycoin() {
     '-launch-browser=false',
     '-gui-dir=' + path.dirname(exe),
     '-color-log=false', // must be disabled or web interface detection
-    'logtofile=true',
+    '-logtofile=true',
     // will break
     // broken (automatically generated certs do not work):
     // '-web-interface-https=true',
   ]
-
   skycoin = childProcess.spawn(exe, args);
 
   skycoin.on('error', (e) => {
@@ -81,7 +82,6 @@ function startSkycoin() {
 });
 
   skycoin.stdout.on('data', (data) => {
-    // log.info(data.toString());
     console.log(data.toString());
 
   // Scan for the web URL string
@@ -106,7 +106,6 @@ function startSkycoin() {
 });
 
   skycoin.stderr.on('data', (data) => {
-    // log.info(data.toString());
     console.log(data.toString());
 });
 
