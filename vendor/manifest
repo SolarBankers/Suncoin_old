@@ -49,8 +49,6 @@
 			"vcs": "git",
 			"revision": "8a331561fe74dadba6edfc59f3be66c22c3b065d",
 			"branch": "master",
-<<<<<<< HEAD
-=======
 			"path": "/context",
 			"notests": true
 		},
@@ -111,7 +109,6 @@
 			"vcs": "git",
 			"revision": "a5b47d31c556af34a302ce5d659e6fea44d90de0",
 			"branch": "v2",
->>>>>>> 91acd9b9b3095a813d8313c153da89337cfe41fd
 			"notests": true
 		}
 	]

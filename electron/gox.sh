@@ -45,7 +45,7 @@ if [ -n "$OUTPUT" ]; then
 fi
 
 gox -osarch="$OSARCH" \
-    -ldflags="-X main.Version=${APP_VERSION}" \
+    -ldflags="-X \"main.Version=${APP_VERSION}\"" \
     -output="${OUTPUT}{{.Dir}}_{{.OS}}_{{.Arch}}" \
     "${CMDDIR}/${CMD}"
 

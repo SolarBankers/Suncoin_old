@@ -3,13 +3,8 @@
     "productName": "Suncoin",
     "author": "suncoin",
     "main": "src/electron-main.js",
-<<<<<<< HEAD
     "version": "0.18.0",
     "description": "suncoin wallet",
-=======
-    "version": "0.17.0",
-    "description": "skycoin wallet",
->>>>>>> 91acd9b9b3095a813d8313c153da89337cfe41fd
     "build": {
         "appId": "org.suncoin.suncoin",
         "nsis": {

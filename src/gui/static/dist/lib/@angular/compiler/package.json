@@ -2,11 +2,7 @@
   "_args": [
     [
       "@angular/compiler@2.0.0-rc.1",
-<<<<<<< HEAD
       "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static"
-=======
-      "/Users/heaven/src/github.com/skycoin/skycoin/src/gui/static"
->>>>>>> 91acd9b9b3095a813d8313c153da89337cfe41fd
     ]
   ],
   "_cnpm_publish_time": 1462310712523,
@@ -42,11 +38,7 @@
   "_shasum": "2f69d866bc7623c80ba05dd4e1339bcfb02d0960",
   "_shrinkwrap": null,
   "_spec": "@angular/compiler@2.0.0-rc.1",
-<<<<<<< HEAD
   "_where": "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static",
-=======
-  "_where": "/Users/heaven/src/github.com/skycoin/skycoin/src/gui/static",
->>>>>>> 91acd9b9b3095a813d8313c153da89337cfe41fd
   "author": {
     "name": "angular"
   },
