@@ -22,7 +22,7 @@
 			"importpath": "github.com/skycoin/skycoin",
 			"repository": "https://github.com/skycoin/skycoin",
 			"vcs": "git",
-			"revision": "91acd9b9b3095a813d8313c153da89337cfe41fd",
+			"revision": "dd924e1f2de8fab945e05b3245dbeabf267f2910",
 			"branch": "master",
 			"notests": true
 		},
@@ -33,23 +33,6 @@
 			"revision": "98c26fb7d1d12f9a413421e9dc518842dc010152",
 			"branch": "master",
 			"path": "/go/cache",
-			"notests": true
-		},
-		{
-			"importpath": "gopkg.in/gcfg.v1",
-			"repository": "https://gopkg.in/gcfg.v1",
-			"vcs": "git",
-			"revision": "27e4946190b4a327b539185f2b5b1f7c84730728",
-			"branch": "master",
-			"notests": true
-		},
-		{
-			"importpath": "gopkg.in/warnings.v0",
-			"repository": "https://gopkg.in/warnings.v0",
-			"vcs": "git",
-			"revision": "8a331561fe74dadba6edfc59f3be66c22c3b065d",
-			"branch": "master",
-			"path": "/context",
 			"notests": true
 		},
 		{
@@ -101,6 +84,7 @@
 			"vcs": "git",
 			"revision": "8a331561fe74dadba6edfc59f3be66c22c3b065d",
 			"branch": "master",
+			"path": "/context",
 			"notests": true
 		},
 		{
