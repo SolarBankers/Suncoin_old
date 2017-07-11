@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "_args": [
     [
       "@angular/router@2.0.0-rc.1",
@@ -39,11 +40,15 @@
   "_shrinkwrap": null,
   "_spec": "@angular/router@2.0.0-rc.1",
   "_where": "/Users/heaven/src/github.com/ShanghaiKuaibei/suncoin/src/gui/static",
+=======
+>>>>>>> 18738add9b11ff239c387106017ef7fa201bb0e5
   "author": {
     "name": "angular"
   },
-  "dependencies": {},
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "",
+<<<<<<< HEAD
   "devDependencies": {},
   "directories": {},
   "dist": {
@@ -52,25 +57,23 @@
     "size": 148836,
     "tarball": "http://registry.npm.taobao.org/@angular/router/download/@angular/router-2.0.0-rc.1.tgz"
   },
+=======
+>>>>>>> 18738add9b11ff239c387106017ef7fa201bb0e5
   "jsnext:main": "esm/index.js",
   "license": "MIT",
   "main": "index.js",
-  "maintainers": [
-    {
-      "email": "angular-core+npm@google.com",
-      "name": "angular"
-    }
-  ],
   "name": "@angular/router",
-  "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/common": "2.0.0-rc.1",
     "@angular/core": "2.0.0-rc.1",
+    "@angular/common": "2.0.0-rc.1",
     "@angular/platform-browser": "2.0.0-rc.1"
   },
+<<<<<<< HEAD
   "publish_time": 1462310745655,
   "readme": "ERROR: No README data found!",
   "scripts": {},
+=======
+>>>>>>> 18738add9b11ff239c387106017ef7fa201bb0e5
   "typins": "index.d.ts",
   "version": "2.0.0-rc.1"
 }

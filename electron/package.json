@@ -3,7 +3,7 @@
     "productName": "Suncoin",
     "author": "suncoin",
     "main": "src/electron-main.js",
-    "version": "0.18.0",
+    "version": "0.19.0",
     "description": "suncoin wallet",
     "build": {
         "appId": "org.suncoin.suncoin",
