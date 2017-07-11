@@ -10,23 +10,27 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime/debug"
 	"runtime/pprof"
 	"syscall"
 	"time"
 
-	logging "github.com/op/go-logging"
 	"github.com/skycoin/skycoin/src/api/webrpc"
 	"github.com/skycoin/skycoin/src/cipher"
 	"github.com/skycoin/skycoin/src/coin"
 	"github.com/skycoin/skycoin/src/daemon"
 	"github.com/skycoin/skycoin/src/gui"
-	"github.com/skycoin/skycoin/src/util"
+	"github.com/skycoin/skycoin/src/util/browser"
+	"github.com/skycoin/skycoin/src/util/cert"
+	"github.com/skycoin/skycoin/src/util/file"
+	"github.com/skycoin/skycoin/src/util/logging"
+	"github.com/skycoin/skycoin/src/wallet"
 )
 
 var (
 	// Version node version which will be set when build wallet by LDFLAGS
 	Version    = "0.0.0"
-	logger     = util.MustGetLogger("main")
+	logger     = logging.MustGetLogger("main")
 	logFormat  = "[suncoin.%{module}:%{level}] %{message}"
 	logModules = []string{
 		"main",
@@ -106,10 +110,9 @@ type Config struct {
 	// GUI directory contains assets for the html gui
 	GUIDirectory string
 	// Logging
-	LogLevel logging.Level
 	ColorLog bool
 	// This is the value registered with flag, it is converted to LogLevel after parsing
-	logLevel string
+	LogLevel string
 
 	// Wallets
 	// Defaults to ${DataDirectory}/wallets/
@@ -191,8 +194,6 @@ func (c *Config) register() {
 		c.ProfileCPUFile, "where to write the cpu profile file")
 	flag.BoolVar(&c.HTTPProf, "http-prof", c.HTTPProf,
 		"Run the http profiling interface")
-	flag.StringVar(&c.logLevel, "log-level", c.logLevel,
-		"Choices are: debug, info, notice, warning, error, critical")
 	flag.BoolVar(&c.ColorLog, "color-log", c.ColorLog,
 		"Add terminal colors to log output")
 	flag.BoolVar(&c.Logtofile, "logtofile", false, "log to file")
@@ -269,9 +270,8 @@ var devConfig Config = Config{
 	// Web GUI static resources
 	GUIDirectory: "./src/gui/static/",
 	// Logging
-	LogLevel: logging.DEBUG,
 	ColorLog: true,
-	logLevel: "DEBUG",
+	LogLevel: "DEBUG",
 
 	// Wallets
 	WalletDirectory: "",
@@ -327,7 +327,9 @@ func (c *Config) postProcess() {
 		c.BlockchainSeckey = cipher.SecKey{}
 	}
 
-	c.DataDirectory = util.InitDataDir(c.DataDirectory)
+	c.DataDirectory, err = file.InitDataDir(c.DataDirectory)
+	panicIfError(err, "Invalid DataDirectory")
+
 	if c.WebInterfaceCert == "" {
 		c.WebInterfaceCert = filepath.Join(c.DataDirectory, "cert.pem")
 	}
@@ -338,10 +340,6 @@ func (c *Config) postProcess() {
 	if c.WalletDirectory == "" {
 		c.WalletDirectory = filepath.Join(c.DataDirectory, "wallets/")
 	}
-
-	ll, err := logging.LogLevel(c.logLevel)
-	panicIfError(err, "Invalid -log-level %s", c.logLevel)
-	c.LogLevel = ll
 
 	c.DBPath = filepath.Join(c.DataDirectory, c.DBPath)
 }
@@ -369,12 +367,12 @@ func printProgramStatus() {
 	}
 }
 
-func catchInterrupt(quit chan<- int) {
+func catchInterrupt(quit chan<- struct{}) {
 	sigchan := make(chan os.Signal, 1)
 	signal.Notify(sigchan, os.Interrupt)
 	<-sigchan
 	signal.Stop(sigchan)
-	quit <- 1
+	close(quit)
 }
 
 // Catches SIGUSR1 and prints internal program state
@@ -390,15 +388,42 @@ func catchDebug() {
 	}
 }
 
-func initLogging(level logging.Level, color bool) {
-	format := logging.MustStringFormatter(logFormat)
-	logging.SetFormatter(format)
-	for _, s := range logModules {
-		logging.SetLevel(level, s)
+// init logging settings
+func initLogging(dataDir string, level string, color, logtofile bool) (func(), error) {
+	logCfg := logging.DevLogConfig(logModules)
+	logCfg.Format = logFormat
+	logCfg.Colors = color
+	logCfg.Level = level
+
+	var fd *os.File
+	if logtofile {
+		logDir := filepath.Join(dataDir, "logs")
+		if err := createDirIfNotExist(logDir); err != nil {
+			log.Println("initial logs folder failed", err)
+			return nil, fmt.Errorf("init log folder fail, %v", err)
+		}
+
+		// open log file
+		tf := "2006-01-02-030405"
+		logfile := filepath.Join(logDir,
+			fmt.Sprintf("%s-v%s.log", time.Now().Format(tf), Version))
+		var err error
+		fd, err = os.OpenFile(logfile, os.O_RDWR|os.O_CREATE, 0666)
+		if err != nil {
+			return nil, err
+		}
+
+		logCfg.Output = io.MultiWriter(os.Stdout, fd)
 	}
-	stdout := logging.NewLogBackend(os.Stdout, "", 0)
-	stdout.Color = color
-	logging.SetBackend(stdout)
+
+	logCfg.InitLogger()
+
+	return func() {
+		logger.Info("Log file closed")
+		if fd != nil {
+			fd.Close()
+		}
+	}, nil
 }
 
 func initProfiling(httpProf, profileCPU bool, profileCPUFile string) {
@@ -454,8 +479,14 @@ func configureDaemon(c *Config) daemon.Config {
 
 // Run starts the suncoin node
 func Run(c *Config) {
+	defer func() {
+		// try catch panic in main thread
+		if r := recover(); r != nil {
+			logger.Error("recover: %v\nstack:%v", r, string(debug.Stack()))
+		}
+	}()
 
-	c.GUIDirectory = util.ResolveResourceDirectory(c.GUIDirectory)
+	c.GUIDirectory = file.ResolveResourceDirectory(c.GUIDirectory)
 
 	scheme := "http"
 	if c.WebInterfaceHTTPS {
@@ -472,55 +503,57 @@ func Run(c *Config) {
 
 	initProfiling(c.HTTPProf, c.ProfileCPU, c.ProfileCPUFile)
 
-	logCfg := util.DevLogConfig(logModules)
-	logCfg.Format = logFormat
-	logCfg.Colors = c.ColorLog
-
-	if c.Logtofile {
-		// open log file
-		// logfile in ~/.skycoin/$time-$version.log
-		var logfmt = "2006-01-02-030405"
-		logfile := filepath.Join(c.DataDirectory, fmt.Sprintf("%s-v%s.log", time.Now().Format(logfmt), Version))
-		fd, err := os.OpenFile(logfile, os.O_RDWR|os.O_CREATE, 0666)
-		if err != nil {
-			panic(err)
-		}
-		defer fd.Close()
-		out := io.MultiWriter(os.Stdout, fd)
-		logCfg.Output = out
+	closelog, err := initLogging(c.DataDirectory, c.LogLevel, c.ColorLog, c.Logtofile)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	logCfg.InitLogger()
-
 	// If the user Ctrl-C's, shutdown properly
-	quit := make(chan int)
+	quit := make(chan struct{})
+
 	go catchInterrupt(quit)
 	// Watch for SIGUSR1
 	go catchDebug()
 
-	gui.InitWalletRPC(c.WalletDirectory)
+	gui.InitWalletRPC(c.WalletDirectory, wallet.OptCoin("sun"))
 
 	dconf := configureDaemon(c)
-	d := daemon.NewDaemon(dconf)
+	d, err := daemon.NewDaemon(dconf)
+	if err != nil {
+		logger.Error("%v", err)
+		return
+	}
 
-	stopDaemon := make(chan int)
-	go d.Start(stopDaemon)
+	errC := make(chan error, 1)
 
+	go func() {
+		errC <- d.Run()
+	}()
+
+	var rpc *webrpc.WebRPC
 	// start the webrpc
-	closingC := make(chan struct{})
 	if c.RPCInterface {
-		go webrpc.Start(
+		rpc, err = webrpc.New(
 			fmt.Sprintf("%v:%v", c.RPCInterfaceAddr, c.RPCInterfacePort),
 			webrpc.ChanBuffSize(1000),
-			webrpc.ThreadNum(1000),
-			webrpc.Gateway(d.Gateway),
-			webrpc.Quit(closingC))
+			webrpc.ThreadNum(c.RPCThreadNum),
+			webrpc.Gateway(d.Gateway))
+		if err != nil {
+			logger.Error("%v", err)
+			return
+		}
+
+		go func() {
+			errC <- rpc.Run()
+		}()
 	}
 
 	// Debug only - forces connection on start.  Violates thread safety.
 	if c.ConnectTo != "" {
 		if err := d.Pool.Pool.Connect(c.ConnectTo); err != nil {
-			log.Panic(err)
+			logger.Error("Force connect %s failed, %v", c.ConnectTo, err)
+			return
 		}
 	}
 
@@ -528,13 +561,13 @@ func Run(c *Config) {
 		var err error
 		if c.WebInterfaceHTTPS {
 			// Verify cert/key parameters, and if neither exist, create them
-			errs := util.CreateCertIfNotExists(host, c.WebInterfaceCert, c.WebInterfaceKey, "Suncoind")
+			errs := cert.CreateCertIfNotExists(host, c.WebInterfaceCert, c.WebInterfaceKey, "Suncoind")
 			if len(errs) != 0 {
 				for _, err := range errs {
 					logger.Error(err.Error())
 				}
 				logger.Error("gui.CreateCertIfNotExists failure")
-				os.Exit(1)
+				return
 			}
 
 			err = gui.LaunchWebInterfaceHTTPS(host, c.GUIDirectory, d, c.WebInterfaceCert, c.WebInterfaceKey)
@@ -545,7 +578,7 @@ func Run(c *Config) {
 		if err != nil {
 			logger.Error(err.Error())
 			logger.Error("Failed to start web GUI")
-			os.Exit(1)
+			return
 		}
 
 		if c.LaunchBrowser {
@@ -554,13 +587,13 @@ func Run(c *Config) {
 				time.Sleep(time.Millisecond * 100)
 
 				logger.Info("Launching System Browser with %s", fullAddress)
-				if err := util.OpenBrowser(fullAddress); err != nil {
+				if err := browser.Open(fullAddress); err != nil {
 					logger.Error(err.Error())
+					return
 				}
 			}()
 		}
 	}
-
 	/*
 		time.Sleep(5)
 		tx := InitTransaction()
@@ -586,14 +619,21 @@ func Run(c *Config) {
 	// 	}()
 	// }
 
-	<-quit
-	stopDaemon <- 1
+	select {
+	case <-quit:
+	case err := <-errC:
+		logger.Error("%v", err)
+	}
 
-	logger.Info("Shutting down")
+	logger.Info("Shutting down...")
+
+	if rpc != nil {
+		rpc.Shutdown()
+	}
+
 	gui.Shutdown()
-	close(closingC)
-
 	d.Shutdown()
+	closelog()
 	logger.Info("Goodbye")
 }
 
@@ -735,4 +775,12 @@ func InitTransaction() coin.Transaction {
 	}
 
 	return tx
+}
+
+func createDirIfNotExist(dir string) error {
+	if _, err := os.Stat(dir); !os.IsNotExist(err) {
+		return nil
+	}
+
+	return os.Mkdir(dir, 0777)
 }

@@ -2,18 +2,35 @@
   "author": {
     "name": "angular"
   },
-  "bundleDependencies": false,
-  "deprecated": false,
+  "dependencies": {},
   "description": "",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "noattachment": false,
+    "shasum": "df97549f72f042d1c1180ebd451eb676416e40f8",
+    "size": 233883,
+    "tarball": "http://registry.npm.taobao.org/@angular/platform-browser/download/@angular/platform-browser-2.0.0-rc.1.tgz"
+  },
   "jsnext:main": "esm/index.js",
   "license": "MIT",
   "main": "index.js",
+  "maintainers": [
+    {
+      "email": "angular-core+npm@google.com",
+      "name": "angular"
+    }
+  ],
   "name": "@angular/platform-browser",
+  "optionalDependencies": {},
   "peerDependencies": {
-    "@angular/core": "2.0.0-rc.1",
     "@angular/common": "2.0.0-rc.1",
-    "@angular/compiler": "2.0.0-rc.1"
+    "@angular/compiler": "2.0.0-rc.1",
+    "@angular/core": "2.0.0-rc.1"
   },
+  "publish_time": 1462310730606,
+  "readme": "ERROR: No README data found!",
+  "scripts": {},
   "typings": "index.d.ts",
   "version": "2.0.0-rc.1"
 }

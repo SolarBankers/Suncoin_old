@@ -26,6 +26,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/skycoin/skycoin"
+  packages = ["src/api/cli","src/api/webrpc","src/cipher","src/cipher/base58","src/cipher/chacha20","src/cipher/encoder","src/cipher/go-bip39","src/cipher/ripemd160","src/cipher/secp256k1-go","src/cipher/secp256k1-go/secp256k1-go2","src/coin","src/daemon","src/daemon/gnet","src/daemon/pex","src/gui","src/util/browser","src/util/cert","src/util/file","src/util/http","src/util/logging","src/util/utc","src/visor","src/visor/blockdb","src/visor/bucket","src/visor/historydb","src/wallet"]
+  revision = "dd924e1f2de8fab945e05b3245dbeabf267f2910"
+  version = "v0.19.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/stretchr/objx"
   packages = ["."]
@@ -36,12 +42,6 @@
   packages = ["assert","mock","require"]
   revision = "69483b4bd14f5845b5a1e55bca19e954e827f1d0"
   version = "v1.1.4"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/tang0th/go-chacha20"
-  packages = ["chacha"]
-  revision = "3d46990f349dd41d624446d57ed5e46e7b1da024"
 
 [[projects]]
   name = "github.com/toqueteos/webbrowser"
@@ -59,17 +59,17 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["pbkdf2"]
-  revision = "adbae1b6b6fb4b02448a0fc0dbbc9ba2b95b294d"
+  revision = "3627ff35f31987174dbee61d9d1dcc1c643e7174"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "50298aa7a9faed39cd341ad7fd9275b1d5ddd70c"
+  revision = "abf9c25f54453410d0c6668e519582a9e1115027"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fe04266049e4a510d18884a25ff48676c7852487d18bc8bb81b0776bfd264259"
+  inputs-digest = "5aff395faf909c19c115b42a5e6e32d4fb70aabd181497f001f88e2255b91f11"
   solver-name = "gps-cdcl"
   solver-version = 1

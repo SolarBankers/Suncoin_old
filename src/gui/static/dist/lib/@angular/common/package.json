@@ -2,16 +2,33 @@
   "author": {
     "name": "angular"
   },
-  "bundleDependencies": false,
-  "deprecated": false,
+  "dependencies": {},
   "description": "",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "noattachment": false,
+    "shasum": "7f3f7622eb9af94da3f5ebff305de662a5d5942e",
+    "size": 303475,
+    "tarball": "http://registry.npm.taobao.org/@angular/common/download/@angular/common-2.0.0-rc.1.tgz"
+  },
   "jsnext:main": "esm/index.js",
   "license": "MIT",
   "main": "index.js",
+  "maintainers": [
+    {
+      "email": "angular-core+npm@google.com",
+      "name": "angular"
+    }
+  ],
   "name": "@angular/common",
+  "optionalDependencies": {},
   "peerDependencies": {
     "@angular/core": "2.0.0-rc.1"
   },
+  "publish_time": 1462310718402,
+  "readme": "ERROR: No README data found!",
+  "scripts": {},
   "typings": "index.d.ts",
   "version": "2.0.0-rc.1"
 }
