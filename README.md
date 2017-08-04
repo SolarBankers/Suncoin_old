@@ -1,16 +1,16 @@
-# Skycoin
+# SunCoin
 
 [![GoDoc](https://godoc.org/github.com/skycoin/skycoin?status.svg)](https://godoc.org/github.com/skycoin/skycoin) [![Go Report Card](https://goreportcard.com/badge/github.com/skycoin/skycoin)](https://goreportcard.com/report/github.com/skycoin/skycoin)
 
-Skycoin is a next-generation cryptocurrency.
+SunCoin is a next-generation cryptocurrency.
 
-Skycoin improves on Bitcoin in too many ways to be addressed here.
+SunCoin improves on Bitcoin in too many ways to be addressed here.
 
-Skycoin is small part of OP Redecentralize and OP Darknet Plan.
+SunCoin is small part of OP Redecentralize and OP Darknet Plan.
 
 ## Installation
 
-For detailed installation instructions, see [Installing Skycoin](../../wiki/Installation).
+For detailed installation instructions, see [Installing SunCoin](../../wiki/Installation).
 
 ## For OSX
 
@@ -159,7 +159,7 @@ dep ensure github.com/foo/bar@tag
 dep prune
 ```
 
-## Run A Skycoin Node
+## Run A SunCoin Node
 
 ```sh
 cd skycoin
@@ -201,11 +201,6 @@ gox [options] cmd/skycoin/
 
 See the api details [here](src/gui/README.md).
 
-## Skycoin explorer
-
-http://explorer.skycoin.net
-
-https://github.com/skycoin/skycoin-explorer
 
 ## Modules
 
@@ -247,7 +242,7 @@ npm install
 gulp dist
 ```
 
-## Skycoin command line interface
+## SunCoin command line interface
 
 See the doc of command line interface [here](cmd/cli/README.md).
 
