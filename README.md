@@ -1,6 +1,6 @@
 # SunCoin
 
-[![GoDoc](https://godoc.org/github.com/skycoin/skycoin?status.svg)](https://godoc.org/github.com/skycoin/skycoin) [![Go Report Card](https://goreportcard.com/badge/github.com/skycoin/skycoin)](https://goreportcard.com/report/github.com/skycoin/skycoin)
+[![GoDoc](https://godoc.org/github.com/suncoin/suncoin?status.svg)](https://godoc.org/github.com/suncoin/suncoin) [![Go Report Card](https://goreportcard.com/badge/github.com/suncoin/suncoin)](https://goreportcard.com/report/github.com/suncoin/suncoin)
 
 SunCoin is a next-generation cryptocurrency.
 
@@ -41,16 +41,16 @@ Install Mercurial and Bazaar
 brew install mercurial bzr
 ```
 
-Fetch the latest code of skycoin from the github repository
+Fetch the latest code of suncoin from the github repository
 
 ```sh
-go get github.com/skycoin/skycoin
+go get github.com/suncoin/suncoin
 ```
 
-Change your current directory to $GOPATH/src/github.com/skycoin/skycoin
+Change your current directory to $GOPATH/src/github.com/suncoin/suncoin
 
 ```sh
-cd $GOPATH/src/github.com/skycoin/skycoin
+cd $GOPATH/src/github.com/suncoin/suncoin
 ```
 
 Run Wallet
@@ -59,10 +59,10 @@ Run Wallet
 ./run.sh
 
 OR
-go run ./cmd/skycoin/skycoin.go
+go run ./cmd/suncoin/suncoin.go
 
 For Options
-go run ./cmd/skycoin/skycoin.go --help
+go run ./cmd/suncoin/suncoin.go --help
 ```
 
 ## For linux
