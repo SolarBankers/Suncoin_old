@@ -99,14 +99,14 @@ gvm use go1.8 >/dev/null
 
 The skycoin repo must be in $GOPATH, under `src/github.com/skycoin`. Otherwise golang programs cannot import the libraries.
 
-Pull skycoin repo into the gopath, note: puts the skycoin folder in $GOPATH/src/github.com/skycoin/skycoin
+Pull skycoin repo into the gopath, note: puts the skycoin folder in $GOPATH/src/github.com/SolarBankers/SunCoin
 
 ```sh
-go get -v github.com/skycoin/skycoin/...
+go get -v github.com/SolarBankers/SunCoin/...
 
 # create symlink of the repo
 cd $HOME
-ln -s $GOPATH/src/github.com/skycoin/skycoin skycoin
+ln -s $GOPATH/src/github.com/suncoin/suncoin suncoin
 ```
 
 ## Dependencies
@@ -162,9 +162,9 @@ dep prune
 ## Run A SunCoin Node
 
 ```sh
-cd skycoin
+cd suncoin
 screen
-go run ./cmd/skycoin/skycoin.go
+go run ./cmd/suncoin/suncoin.go
 ```
 
 then ctrl+A then D to exit screen
